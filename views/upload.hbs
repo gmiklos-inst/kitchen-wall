@@ -1,0 +1,38 @@
+<div class="page-upload d-flex">
+    <div class="styled-file-container flex-fill">
+        <button class="btn btn-primary btn-lg btn-block">Upload</button>
+        <input id="file-input" type="file" name="name" multiple accept="image/*"/>
+    </div>
+</div>
+
+<script type="application/javascript">
+    if (window.File && window.FileReader && window.FormData) {
+        const $inputField = document.getElementById('file-input');
+
+        $inputField.addEventListener('change', e => {
+            const formData = new FormData();
+
+            let fileIdx = 0;
+            for (const file of e.target.files) {
+                if (file && /^image\//i.test(file.type)) {
+                    formData.append(`upload${fileIdx++}`, file, file.name);
+                }
+            }
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+                    .then(() => alert('success!'))
+                    .catch((err) => alert('error, oh no! ' + err));
+
+        });
+    } else {
+        alert("File upload is not supported!");
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('dom content loaded');
+        document.getElementById('file-input').click();
+    }, false);
+</script>
