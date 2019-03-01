@@ -10,8 +10,14 @@ const usersRouter = require('./routes/users');
 
 const app = express();
 
+// files setup
 const fs = require('fs');
-fs.mkdirSync('files/', {recursive: true});
+const filesDir = path.join(__dirname, 'files');
+
+fs.mkdirSync(filesDir, {recursive: true});
+
+app.locals.filesDir = filesDir;
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,7 +28,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/files', express.static(filesDir));
+
 app.use('/scripts/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist/'));
+app.use('/scripts/font-awesome', express.static(__dirname + '/node_modules/font-awesome/'));
+app.use('/scripts/packery', express.static(__dirname + '/node_modules/packery/dist'));
+app.use('/scripts/imagesloaded', express.static(__dirname + '/node_modules/imagesloaded'));
+app.use('/scripts/jquery', express.static(__dirname + '/node_modules/jquery/dist'));
+app.use('/scripts/qrcodejs', express.static(__dirname + '/node_modules/qrcodejs'));
+
 app.use(fileUpload());
 
 app.use('/', indexRouter);

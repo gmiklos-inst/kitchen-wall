@@ -1,13 +1,25 @@
-<div class="page-upload d-flex">
+<div class="page-upload d-flex flex-column">
     <div class="styled-file-container flex-fill">
         <button class="btn btn-primary btn-lg btn-block">Upload</button>
         <input id="file-input" type="file" name="name" multiple accept="image/*"/>
+    </div>
+    <div id="success-alert" class="alert alert-success d-none" role="alert">
+        <i class="fas fa-check">
+            Uploaded successfully
+        </i>
+    </div>
+    <div id="error-alert" class="alert alert-danger d-none" role="alert">
+        <i class="fas fa-check">
+            Uploaded successfully
+        </i>
     </div>
 </div>
 
 <script type="application/javascript">
     if (window.File && window.FileReader && window.FormData) {
         const $inputField = document.getElementById('file-input');
+        const $successAlert = document.getElementById('success-alert');
+        const $errorAlert = document.getElementById('error-alert');
 
         $inputField.addEventListener('change', e => {
             const formData = new FormData();
@@ -19,12 +31,24 @@
                 }
             }
 
+            if (!$successAlert.classList.contains('d-none')) {
+                $successAlert.classList.add('d-none');
+            }
+
+            if (!$errorAlert.classList.contains('d-none')) {
+                $errorAlert.classList.add('d-none');
+            }
+
             fetch('/upload', {
                 method: 'POST',
                 body: formData
             })
-                    .then(() => alert('success!'))
-                    .catch((err) => alert('error, oh no! ' + err));
+            .then(() => {
+                $successAlert.classList.remove('d-none');
+            })
+            .catch((err) => {
+                $errorAlert.classList.remove('d-none');
+            });
 
         });
     } else {
