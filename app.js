@@ -37,6 +37,7 @@ app.use('/scripts/packery', express.static(__dirname + '/node_modules/packery/di
 app.use('/scripts/imagesloaded', express.static(__dirname + '/node_modules/imagesloaded'));
 app.use('/scripts/jquery', express.static(__dirname + '/node_modules/jquery/dist'));
 app.use('/scripts/qrcodejs', express.static(__dirname + '/node_modules/qrcodejs'));
+app.use('/scripts/masonry', express.static(__dirname + '/node_modules/masonry-layout/dist'));
 
 app.use(fileUpload());
 
