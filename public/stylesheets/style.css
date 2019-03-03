@@ -37,8 +37,12 @@ body {
   width: 20%;
 }
 
+html.page-index , .page-index body {
+  overflow: hidden;
+}
+
 .page-index .qr-code {
-  position: absolute;
+  position: fixed;
   right: 0;
   bottom: 0;
   background: white;
