@@ -7,6 +7,7 @@ const fileUpload = require('express-fileupload');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const presenterRouter = require('./routes/presenter');
 
 const app = express();
 
@@ -15,6 +16,7 @@ const fs = require('fs');
 const filesDir = path.join(__dirname, 'files');
 
 fs.mkdirSync(filesDir, {recursive: true});
+fs.mkdirSync(path.join(filesDir, 'presenter'), {recursive: true});
 
 app.locals.filesDir = filesDir;
 
@@ -38,11 +40,13 @@ app.use('/scripts/imagesloaded', express.static(__dirname + '/node_modules/image
 app.use('/scripts/jquery', express.static(__dirname + '/node_modules/jquery/dist'));
 app.use('/scripts/qrcodejs', express.static(__dirname + '/node_modules/qrcodejs'));
 app.use('/scripts/masonry', express.static(__dirname + '/node_modules/masonry-layout/dist'));
+app.use('/scripts/pdfjs', express.static(__dirname + '/node_modules/pdfjs-dist/build'));
 
 app.use(fileUpload());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/presenter', presenterRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

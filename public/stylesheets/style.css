@@ -37,11 +37,45 @@ body {
   width: 20%;
 }
 
-.qr-code {
+.page-index .qr-code {
   position: absolute;
   right: 0;
   bottom: 0;
   background: white;
   border-radius: 1rem;
   padding: 1rem;
+}
+
+html.page-presenter, .page-presenter body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.page-presenter .instruction {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  width: 50%;
+  margin-left: -25%;
+
+  text-align: center;
+
+  background: white;
+  border-radius: 1rem;
+
+  padding: 2rem;
+
+  overflow: hidden;
+}
+
+.page-presenter .qr-code {
+  width: 30%;
+  margin: auto;
+}
+
+.page-presenter .qr-code img {
+  width: 100%;
 }

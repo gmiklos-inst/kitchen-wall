@@ -1,0 +1,117 @@
+<canvas class="w-100 h-100">
+
+</canvas>
+
+<div class="instruction">
+    <h1>Push PDF in order to activate display</h1>
+
+    <div class="qr-code"></div>
+</div>
+
+
+<script src="/scripts/qrcodejs/qrcode.js"></script>
+<script src="/scripts/pdfjs/pdf.js"></script>
+
+<script type="application/javascript">
+    // throttling code taken from MDN
+    (function() {
+        var throttle = function(type, name, obj) {
+            obj = obj || window;
+            var running = false;
+            var func = function() {
+                if (running) { return; }
+                running = true;
+                requestAnimationFrame(function() {
+                    obj.dispatchEvent(new CustomEvent(name));
+                    running = false;
+                });
+            };
+            obj.addEventListener(type, func);
+        };
+
+        /* init - you can init any event */
+        throttle("resize", "optimizedResize");
+    })();
+
+    const $instruction = document.querySelector('.instruction');
+    const $canvas = document.querySelector('canvas');
+    const canvasContext = $canvas.getContext('2d');
+
+    let timeoutId;
+    let latestRenderTask;
+    let loadingTask;
+
+    let currentPresentation = "{{startWith}}";
+
+    function beginPresenting(file) {
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+            timeoutId = null;
+        }
+
+        if (latestRenderTask) {
+            latestRenderTask.cancel();
+            latestRenderTask = null;
+        }
+
+        if (loadingTask) {
+            loadingTask.destroy();
+            loadingTask = null;
+        }
+
+        if (!$instruction.classList.contains('d-none')) {
+            $instruction.classList.add('d-none');
+        }
+
+        $canvas.width = $canvas.clientWidth;
+        $canvas.height = $canvas.clientHeight;
+
+
+        loadingTask = pdfjsLib.getDocument(file);
+
+        loadingTask.then(pdf => {
+            const numberOfPages = pdf.numPages;
+            let currentPage = 1;
+
+            function renderPage(pageNumber) {
+                pdf.getPage(pageNumber).then(page => {
+                    const viewport = page.getViewport(1.0);
+                    const scale = $canvas.clientWidth / viewport.width;
+                    const scaledViewport = page.getViewport(scale);
+
+                    latestRenderTask = page.render({ canvasContext,  viewport: scaledViewport });
+                });
+
+                timeoutId = setTimeout(() => {
+                    console.log("Timed out");
+                    currentPage = ++currentPage % (numberOfPages + 1);
+                    renderPage(currentPage);
+                }, 10000);
+            }
+
+            renderPage(currentPage);
+        });
+    }
+
+    if (currentPresentation) {
+        beginPresenting(currentPresentation);
+    }
+
+    window.addEventListener('optimizedResize', () => {
+        console.log('resize');
+
+        beginPresenting(currentPresentation);
+    });
+
+    const eventSource = new EventSource("/presenter/upload/events");
+
+    eventSource.addEventListener('reload_presentation', e => {
+        const file = JSON.parse(e.data);
+
+        beginPresenting(file);
+    });
+
+    const $qrCode = document.querySelector('.qr-code');
+    new QRCode($qrCode, window.location.href + "presenter/upload");
+</script>
+
