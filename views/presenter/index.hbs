@@ -13,25 +13,7 @@
 <script src="/scripts/pdfjs/pdf.js"></script>
 
 <script type="application/javascript">
-    // throttling code taken from MDN
-    (function() {
-        var throttle = function(type, name, obj) {
-            obj = obj || window;
-            var running = false;
-            var func = function() {
-                if (running) { return; }
-                running = true;
-                requestAnimationFrame(function() {
-                    obj.dispatchEvent(new CustomEvent(name));
-                    running = false;
-                });
-            };
-            obj.addEventListener(type, func);
-        };
-
-        /* init - you can init any event */
-        throttle("resize", "optimizedResize");
-    })();
+    enableFullscreenToggle();
 
     const $instruction = document.querySelector('.instruction');
     const $canvas = document.querySelector('canvas');
@@ -83,7 +65,6 @@
                 });
 
                 timeoutId = setTimeout(() => {
-                    console.log("Timed out");
                     currentPage = ++currentPage % (numberOfPages + 1);
                     renderPage(currentPage);
                 }, 10000);
@@ -98,8 +79,6 @@
     }
 
     window.addEventListener('optimizedResize', () => {
-        console.log('resize');
-
         beginPresenting(currentPresentation);
     });
 
