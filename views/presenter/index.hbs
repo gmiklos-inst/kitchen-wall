@@ -48,7 +48,6 @@
         $canvas.width = $canvas.clientWidth;
         $canvas.height = $canvas.clientHeight;
 
-
         loadingTask = pdfjsLib.getDocument(file);
 
         loadingTask.then(pdf => {
@@ -79,7 +78,9 @@
     }
 
     window.addEventListener('optimizedResize', () => {
-        beginPresenting(currentPresentation);
+        if (currentPresentation) {
+            beginPresenting(currentPresentation);
+        }
     });
 
     const eventSource = new EventSource("/presenter/upload/events");
@@ -91,6 +92,6 @@
     });
 
     const $qrCode = document.querySelector('.qr-code');
-    new QRCode($qrCode, window.location.href + "presenter/upload");
+    new QRCode($qrCode, window.location.href + "/upload");
 </script>
 
