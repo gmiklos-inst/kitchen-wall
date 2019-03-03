@@ -16,12 +16,17 @@
     "hbs": "~4.0.1",
     "http-errors": "~1.6.2",
     "imagesloaded": "^4.1.4",
+    "inquirer": "^6.2.2",
     "jquery": "^3.3.1",
+    "lgtv2": "^1.4.1",
     "masonry-layout": "^4.2.2",
     "morgan": "~1.9.0",
-    "nodemon": "^1.18.10",
-    "packery": "^2.1.2",
+    "netmask": "^1.0.6",
+    "node-ssdp": "^4.0.0",
     "pdfjs-dist": "^2.0.943",
     "qrcodejs": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
   }
 }
