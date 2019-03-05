@@ -37,11 +37,13 @@ router.get('/upload', (req, res) => {
 
 router.post('/upload', (req, res) => {
     for (const file of Object.values(req.files)) {
-        file.mv(path.join(req.app.locals.filesDir, `upload-${uuid()}.jpg`), (err) => {
+        const finalName = `upload-${uuid()}.jpg`;
+
+        file.mv(path.join(req.app.locals.filesDir, finalName), (err) => {
             if (err) {
                 return res.status(500).send(err);
             } else {
-                hub.event('new_file', file.name);
+                hub.event('new_file', finalName);
             }
         });
     }
