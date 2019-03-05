@@ -64,7 +64,7 @@
                 });
 
                 timeoutId = setTimeout(() => {
-                    currentPage = ++currentPage % (numberOfPages + 1);
+                    currentPage = (++currentPage % numberOfPages) + 1;
                     renderPage(currentPage);
                 }, 10000);
             }
@@ -83,7 +83,7 @@
         }
     });
 
-    const eventSource = new EventSource("/presenter/upload/events");
+    const eventSource = new EventSource(slashJoin(window.location.href, "upload/events"));
 
     eventSource.addEventListener('reload_presentation', e => {
         const file = JSON.parse(e.data);
@@ -92,6 +92,6 @@
     });
 
     const $qrCode = document.querySelector('.qr-code');
-    new QRCode($qrCode, window.location.href + "/upload");
+    new QRCode($qrCode, slashJoin(window.location.href, "upload"));
 </script>
 

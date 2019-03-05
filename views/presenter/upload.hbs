@@ -39,7 +39,7 @@
                 $errorAlert.classList.add('d-none');
             }
 
-            fetch('/presenter/upload', {
+            fetch(window.location.href, {
                 method: 'POST',
                 body: formData
             })

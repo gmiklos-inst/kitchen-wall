@@ -12,10 +12,7 @@ const presenterRouter = require('./routes/presenter');
 const app = express();
 
 // files setup
-const fs = require('fs');
 const filesDir = path.join(__dirname, 'files');
-
-fs.mkdirSync(filesDir, {recursive: true});
 
 app.locals.filesDir = filesDir;
 
@@ -43,7 +40,7 @@ app.use('/scripts/resizer', express.static(__dirname + '/node_modules/browser-im
 app.use(fileUpload());
 
 app.use('/', indexRouter);
-app.use('/presenter', presenterRouter);
+app.use('/presenter/:namespace', presenterRouter);
 app.use('/photowall/:namespace', photowallRouter);
 
 // catch 404 and forward to error handler
