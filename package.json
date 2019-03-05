@@ -8,6 +8,7 @@
   "dependencies": {
     "@toverux/expresse": "^2.4.0",
     "bootstrap": "^4.3.1",
+    "browser-image-resizer": "^2.0.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
@@ -24,7 +25,8 @@
     "netmask": "^1.0.6",
     "node-ssdp": "^4.0.0",
     "pdfjs-dist": "^2.0.943",
-    "qrcodejs": "^1.0.0"
+    "qrcodejs": "^1.0.0",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "nodemon": "^1.18.10"

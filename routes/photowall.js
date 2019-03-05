@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
-const { Hub, sseHub } = require('@toverux/expresse');
-
 const fs = require('fs');
+const uuid = require('uuid/v1');
+
+const { Hub, sseHub } = require('@toverux/expresse');
 
 const hub = new Hub();
 
@@ -32,7 +33,7 @@ router.get('/upload', (req, res) => {
 
 router.post('/upload', (req, res) => {
     for (const file of Object.values(req.files)) {
-        file.mv(path.join(req.app.locals.filesDir, file.name), (err) => {
+        file.mv(path.join(req.app.locals.filesDir, `upload-${uuid()}.jpg`), (err) => {
             if (err) {
                 return res.status(500).send(err);
             } else {

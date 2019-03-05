@@ -15,22 +15,21 @@
     </div>
 </div>
 
+<script src="/scripts/resizer/index.js"></script>
 <script type="application/javascript">
     if (window.File && window.FileReader && window.FormData) {
         const $inputField = document.getElementById('file-input');
         const $successAlert = document.getElementById('success-alert');
         const $errorAlert = document.getElementById('error-alert');
 
+        const resizeConfig = {
+            quality: 0.90,
+            maxWidth: 1920,
+            maxHeight: 1080,
+            autoRotate: true
+        };
+
         $inputField.addEventListener('change', e => {
-            const formData = new FormData();
-
-            let fileIdx = 0;
-            for (const file of e.target.files) {
-                if (file && /^image\//i.test(file.type)) {
-                    formData.append(`upload${fileIdx++}`, file, file.name);
-                }
-            }
-
             if (!$successAlert.classList.contains('d-none')) {
                 $successAlert.classList.add('d-none');
             }
@@ -39,25 +38,43 @@
                 $errorAlert.classList.add('d-none');
             }
 
-            fetch('/photowall/upload', {
-                method: 'POST',
-                body: formData
-            })
-            .then(() => {
-                $successAlert.classList.remove('d-none');
-            })
-            .catch((err) => {
+            const inputFiles = Array.from(e.target.files);
+
+            Promise.all(
+                    inputFiles.map(file =>
+                            BrowserImageResizer.readAndCompressImage(file, resizeConfig)
+                    )
+            ).then(resizedFiles => {
+                const formData = new FormData();
+
+                let fileIdx = 0;
+                for (const file of resizedFiles) {
+                    if (file && /^image\//i.test(file.type)) {
+                        formData.append(`upload${fileIdx++}`, file);
+                    }
+                }
+
+                fetch('/photowall/upload', {
+                    method: 'POST',
+                    body: formData
+                }).then(() => {
+                    $successAlert.classList.remove('d-none');
+                })
+                .catch((err) => {
+                    $errorAlert.classList.remove('d-none');
+                    $errorAlert.innerText = err;
+                });
+
+            }).catch((err) => {
                 $errorAlert.classList.remove('d-none');
                 $errorAlert.innerText = err;
             });
-
         });
     } else {
         alert("File upload is not supported!");
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        console.log('dom content loaded');
         document.getElementById('file-input').click();
     }, false);
 </script>
