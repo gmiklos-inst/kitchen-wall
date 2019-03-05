@@ -6,7 +6,7 @@ const logger = require('morgan');
 const fileUpload = require('express-fileupload');
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const photowallRouter = require('./routes/photowall');
 const presenterRouter = require('./routes/presenter');
 
 const app = express();
@@ -19,7 +19,6 @@ fs.mkdirSync(filesDir, {recursive: true});
 fs.mkdirSync(path.join(filesDir, 'presenter'), {recursive: true});
 
 app.locals.filesDir = filesDir;
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -35,7 +34,6 @@ app.use('/files', express.static(filesDir));
 
 app.use('/scripts/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist/'));
 app.use('/scripts/font-awesome', express.static(__dirname + '/node_modules/font-awesome/'));
-app.use('/scripts/packery', express.static(__dirname + '/node_modules/packery/dist'));
 app.use('/scripts/imagesloaded', express.static(__dirname + '/node_modules/imagesloaded'));
 app.use('/scripts/jquery', express.static(__dirname + '/node_modules/jquery/dist'));
 app.use('/scripts/qrcodejs', express.static(__dirname + '/node_modules/qrcodejs'));
@@ -45,8 +43,8 @@ app.use('/scripts/pdfjs', express.static(__dirname + '/node_modules/pdfjs-dist/b
 app.use(fileUpload());
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/presenter', presenterRouter);
+app.use('/photowall', photowallRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

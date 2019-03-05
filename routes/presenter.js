@@ -11,19 +11,18 @@ router.get('/', function(req, res) {
     const uploadPath = path.join(uploadDir, "presentation.pdf");
 
     fs.access(uploadPath, fs.constants.F_OK | fs.constants.R_OK, (err) => {
-        const params = { page: 'presenter' };
+        const params = { pageClass: 'page-presenter-index' };
 
         if (!err) {
             params['startWith'] = 'files/presenter/presentation.pdf';
         }
 
         res.render('presenter/index', params);
-
     });
 });
 
 router.get('/upload', function(req, res) {
-    res.render('presenter/upload', { page: 'upload' });
+    res.render('presenter/upload', { pageClass: 'page-presenter-upload page-upload' });
 });
 
 router.get('/upload/events', sseHub({ hub }), (req, res) => {

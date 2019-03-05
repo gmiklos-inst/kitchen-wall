@@ -1,19 +1,3 @@
-body {
-  background-color: #2D3B45;
-}
-
-.page-upload, .page-upload body {
-  margin: 0;
-  padding: 4px;
-  width: 100%;
-  height: 100%;
-}
-
-.page-upload .btn-primary {
-  height: 100%;
-  font-size: 6rem;
-}
-
 .styled-file-container {
   overflow: hidden;
   position: relative;
@@ -33,15 +17,12 @@ body {
   top: 0;
 }
 
-.photo, .photo-sizer {
-  width: 20%;
-}
-
-html.page-index , .page-index body {
+/* photowall */
+html.page-photowall-index , .page-photowall-index body {
   overflow: hidden;
 }
 
-.page-index .qr-code {
+.page-photowall-index .qr-code {
   position: fixed;
   right: 0;
   bottom: 0;
@@ -50,7 +31,13 @@ html.page-index , .page-index body {
   padding: 1rem;
 }
 
-html.page-presenter, .page-presenter body {
+.photo, .photo-sizer {
+  width: 20%;
+}
+
+/* presenter */
+
+html.page-presenter-index, .page-presenter-index body {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -58,7 +45,7 @@ html.page-presenter, .page-presenter body {
   overflow: hidden;
 }
 
-.page-presenter .instruction {
+.page-presenter-index .instruction {
   position: absolute;
   left: 50%;
   top: 30%;
@@ -75,11 +62,23 @@ html.page-presenter, .page-presenter body {
   overflow: hidden;
 }
 
-.page-presenter .qr-code {
+.page-presenter-index .qr-code {
   width: 30%;
   margin: auto;
 }
 
-.page-presenter .qr-code img {
+.page-presenter-index .qr-code img {
   width: 100%;
+}
+
+.page-upload, .page-upload body {
+  margin: 0;
+  padding: 4px;
+  width: 100%;
+  height: 100%;
+}
+
+.page-upload .btn-primary {
+  height: 100%;
+  font-size: 6rem;
 }

@@ -1,46 +1,7 @@
-<div id="photos" class="photos">
-    <div class="photo-sizer"></div>
+<h1>Display</h1>
 
-    {{#each files}}
-        <img src="files/{{this}}" class="photo" />
-    {{else}}
-        Oh no, no pics.
-    {{/each}}
+<div class="d-flex d-flex-row display-apps">
+    <a href="/photowall" class="btn btn-lg btn-primary m-1 p-5">Photowall</a><br>
+    <a href="/presenter" class="btn btn-lg btn-primary m-1 p-5">Presenter</a>
 </div>
 
-<div id="qr-code" class="qr-code"></div>
-
-<script src="/scripts/qrcodejs/qrcode.js"></script>
-<script src="/scripts/masonry/masonry.pkgd.js"></script>
-<script src="/scripts/imagesloaded/imagesloaded.pkgd.js"></script>
-<script type="application/javascript">
-    enableFullscreenToggle();
-
-    const $photosContainer = document.getElementById("photos");
-
-    imagesLoaded($photosContainer, () => {
-        const masonry = new Masonry($photosContainer, {
-            itemSelector: '.photo',
-            columnWidth: '.photo-sizer',
-            percentPosition: true
-        });
-
-        const eventSource = new EventSource("/upload/events");
-
-        eventSource.addEventListener('new_file', e => {
-            const filename = JSON.parse(e.data);
-
-            const $image = document.createElement('img');
-            $image.setAttribute("src", "files/" + filename);
-            $image.classList.add('photo');
-            $photosContainer.prepend($image);
-
-            $image.onload = () => {
-                masonry.prepended($image);
-            };
-        });
-    });
-
-    const $qrCode = document.getElementById('qr-code');
-    new QRCode($qrCode, window.location.href + "upload");
-</script>

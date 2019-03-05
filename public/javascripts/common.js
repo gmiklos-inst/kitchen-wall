@@ -12,6 +12,22 @@ function enableFullscreenToggle() {
     document.body.addEventListener('click', () => toggleFullScreen());
 }
 
+function slashJoin() {
+    const parts = Array.from(arguments);
+
+    if (parts.length === 0) {
+        return "";
+    }
+
+    if (parts.length === 1) {
+        return parts[0];
+    }
+
+    const trailer = parts.slice(0, -1).map(part => part.endsWith('/') ? part : part + '/' );
+
+    return trailer.join('') + parts[parts.length - 1];
+}
+
 // throttling code taken from MDN
 (function() {
     var throttle = function(type, name, obj) {

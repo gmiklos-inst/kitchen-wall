@@ -39,7 +39,7 @@
                 $errorAlert.classList.add('d-none');
             }
 
-            fetch('/upload', {
+            fetch('/photowall/upload', {
                 method: 'POST',
                 body: formData
             })
@@ -48,6 +48,7 @@
             })
             .catch((err) => {
                 $errorAlert.classList.remove('d-none');
+                $errorAlert.innerText = err;
             });
 
         });
