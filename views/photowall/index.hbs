@@ -2,7 +2,7 @@
     <div class="photo-sizer"></div>
 
     {{#each files}}
-        <img src="files/{{this}}" class="photo" />
+        <img src="{{this}}" class="photo" />
     {{else}}
         Oh no, no pics.
     {{/each}}
@@ -25,13 +25,13 @@
             percentPosition: true
         });
 
-        const eventSource = new EventSource("/photowall/upload/events");
+        const eventSource = new EventSource(slashJoin(window.location.href, "/upload/events"));
 
         eventSource.addEventListener('new_file', e => {
             const filename = JSON.parse(e.data);
 
             const $image = document.createElement('img');
-            $image.setAttribute("src", "files/" + filename);
+            $image.setAttribute("src", filename);
             $image.classList.add('photo');
             $photosContainer.prepend($image);
 

@@ -16,7 +16,6 @@ const fs = require('fs');
 const filesDir = path.join(__dirname, 'files');
 
 fs.mkdirSync(filesDir, {recursive: true});
-fs.mkdirSync(path.join(filesDir, 'presenter'), {recursive: true});
 
 app.locals.filesDir = filesDir;
 
@@ -45,7 +44,7 @@ app.use(fileUpload());
 
 app.use('/', indexRouter);
 app.use('/presenter', presenterRouter);
-app.use('/photowall', photowallRouter);
+app.use('/photowall/:namespace', photowallRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

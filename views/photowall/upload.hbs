@@ -54,7 +54,7 @@
                     }
                 }
 
-                fetch('/photowall/upload', {
+                fetch(window.location.href, {
                     method: 'POST',
                     body: formData
                 }).then(() => {
