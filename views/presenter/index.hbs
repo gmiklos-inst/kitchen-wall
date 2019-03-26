@@ -8,12 +8,14 @@
     <div class="qr-code"></div>
 </div>
 
-
+<script src="/scripts/socketio/socket.io.js"></script>
 <script src="/scripts/qrcodejs/qrcode.js"></script>
 <script src="/scripts/pdfjs/pdf.js"></script>
 
 <script type="application/javascript">
     enableFullscreenToggle();
+
+    const namespace = "{{namespace}}";
 
     const $instruction = document.querySelector('.instruction');
     const $canvas = document.querySelector('canvas');
@@ -83,11 +85,9 @@
         }
     });
 
-    const eventSource = new EventSource(slashJoin(window.location.href, "upload/events"));
+    const socket = io(`/presenter?room=${namespace}`);
 
-    eventSource.addEventListener('reload_presentation', e => {
-        const file = JSON.parse(e.data);
-
+    socket.on('reload_presentation', (file) => {
         beginPresenting(file);
     });
 

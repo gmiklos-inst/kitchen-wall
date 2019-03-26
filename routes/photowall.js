@@ -39,7 +39,7 @@ router.post('/upload', (req, res) => {
             if (err) {
                 return res.status(500).send(err);
             } else {
-                const io = req.app.get('io');
+                const io = req.app.get('io.photowall');
                 io.in(req.params.namespace).emit('new_file', path.join(req.uploadBase, finalName));
             }
         });

@@ -28,7 +28,7 @@
             percentPosition: true
         });
 
-        const socket = io(window.location.origin + `/?room=${namespace}`);
+        const socket = io(`/photowall?room=${namespace}`);
 
         socket.on('new_file', (filename) => {
             const $image = document.createElement('img');

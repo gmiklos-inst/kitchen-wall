@@ -2,11 +2,9 @@ const express = require('express');
 const router = express.Router({ mergeParams: true });
 const path = require('path');
 
-const { Hub, sseHub } = require('@toverux/expresse');
 const {namespaceDir} = require('./middleware');
 
 const fs = require('fs');
-const hub = new Hub();
 
 router.use(namespaceDir('presenter'));
 
@@ -34,10 +32,6 @@ router.get('/upload', function(req, res) {
     res.render('presenter/upload', { pageClass: 'page-presenter-upload page-upload' });
 });
 
-router.get('/upload/events', sseHub({ hub }), (req, res) => {
-    res.sse.event('welcome', 'Welcome!');
-});
-
 router.post('/upload', (req, res) => {
     const file = req.files.upload;
 
@@ -46,7 +40,8 @@ router.post('/upload', (req, res) => {
             console.error(`Failed to upload file: ${err}`);
             return res.status(500).send(err);
         } else {
-            hub.event('reload_presentation', req.presentationUrl);
+            const io = req.app.get('io.presenter');
+            io.in(req.params.namespace).emit('reload_presentation', req.presentationUrl);
         }
 
         res.status(200).send();
