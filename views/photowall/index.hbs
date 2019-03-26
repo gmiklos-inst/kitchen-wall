@@ -1,11 +1,27 @@
 <div id="photos" class="photos">
     <div class="photo-sizer"></div>
-
     {{#each files}}
         <img src="{{this}}" class="photo" />
-    {{else}}
-        Oh no, no pics.
     {{/each}}
+</div>
+
+{{#if files.length }}
+{{else}}
+    <div class="no-pics">
+        Oh no, no pics.
+    </div>
+{{/if}}
+
+<div class="glide">
+    <div class="glide__track" data-glide-el="track">
+        <ul class="glide__slides">
+            {{#each files}}
+                <li class="glide__slide">
+                    <img src="{{this}}" />
+                </li>
+            {{/each}}
+        </ul>
+    </div>
 </div>
 
 <div id="qr-code" class="qr-code"></div>
@@ -14,15 +30,18 @@
 <script src="/scripts/qrcodejs/qrcode.js"></script>
 <script src="/scripts/masonry/masonry.pkgd.js"></script>
 <script src="/scripts/imagesloaded/imagesloaded.pkgd.js"></script>
+<script src="/scripts/glide/glide.js"></script>
 <script type="application/javascript">
     enableFullscreenToggle();
 
     const namespace = "{{namespace}}";
 
-    const $photosContainer = document.getElementById("photos");
+    const $noPics = document.querySelector('.no-pics');
+    const $backgroundPhotosContainer = document.getElementById("photos");
+    const $glidePhotosContainer = document.querySelector(".glide .glide__slides");
 
-    imagesLoaded($photosContainer, () => {
-        const masonry = new Masonry($photosContainer, {
+    imagesLoaded($backgroundPhotosContainer, () => {
+        const masonry = new Masonry($backgroundPhotosContainer, {
             itemSelector: '.photo',
             columnWidth: '.photo-sizer',
             percentPosition: true
@@ -31,17 +50,48 @@
         const socket = io(`/photowall?room=${namespace}`);
 
         socket.on('new_file', (filename) => {
-            const $image = document.createElement('img');
-            $image.setAttribute("src", filename);
-            $image.classList.add('photo');
-            $photosContainer.prepend($image);
+            $noPics && $noPics.remove();
 
-            $image.onload = () => {
-                masonry.prepended($image);
+            const $blurImage = document.createElement('img');
+            $blurImage.setAttribute("src", filename);
+            $blurImage.classList.add('photo');
+            $backgroundPhotosContainer.prepend($blurImage);
+
+            $blurImage.onload = () => {
+                masonry.prepended($blurImage);
             };
+
+            const $glideImage = document.createElement('img');
+            $glideImage.setAttribute("src", filename);
+
+            const $glideItem = document.createElement('li');
+            $glideItem.classList.add('glide__slide');
+            $glideItem.prepend($glideImage);
+
+            $glidePhotosContainer.appendChild($glideItem);
+
+            initGlide()
         });
     });
 
     const $qrCode = document.getElementById('qr-code');
     new QRCode($qrCode, slashJoin(window.location.href, "upload"));
+
+    let activeGlide;
+    function initGlide() {
+        if (activeGlide) {
+            activeGlide.destroy();
+            activeGlide = null;
+        }
+
+        activeGlide = new Glide('.glide', {
+            type: 'carousel',
+            autoplay: 5000,
+            keyboard: false
+        }).mount();
+    }
+
+    if ($glidePhotosContainer.children.length) {
+        initGlide();
+    }
 </script>

@@ -1,95 +1,141 @@
 .styled-file-container {
-  overflow: hidden;
-  position: relative;
+    overflow: hidden;
+    position: relative;
 }
 
 .styled-file-container [type=file] {
-  cursor: inherit;
-  display: block;
-  font-size: 999px;
-  filter: alpha(opacity=0);
-  min-height: 100%;
-  min-width: 100%;
-  opacity: 0;
-  position: absolute;
-  right: 0;
-  text-align: right;
-  top: 0;
+    cursor: inherit;
+    display: block;
+    font-size: 999px;
+    filter: alpha(opacity=0);
+    min-height: 100%;
+    min-width: 100%;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 0;
 }
 
 /* photowall */
-html.page-photowall-index , .page-photowall-index body {
-  overflow: hidden;
+html.page-photowall-index, .page-photowall-index body {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    background: #394B58;
+}
+
+.page-photowall-index .photos {
+    filter: blur(4px);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.page-photowall-index .glide {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.page-photowall-index .glide__slide {
+    padding: 1em;
+}
+
+.page-photowall-index .glide img {
+    margin: auto;
+    max-width: 75%;
+    max-height: 50%;
+    width: auto;
+    height: auto;
+    display: block;
+    box-shadow:0 1px 8px rgba(0,0,0,0.9);
+}
+
+.page-photowall-index .no-pics {
+    position: absolute;
+    width: 50%;
+    left: 50%;
+    top: 50%;
+    margin-left: -25%;
+    font-size: 5em;
+    text-align: center;
+    color: white;
 }
 
 .page-photowall-index .qr-code {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  background: white;
-  border-radius: 1rem;
-  padding: 1rem;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    background: white;
+    border-radius: 1rem;
+    padding: 1rem;
 }
 
-.photo, .photo-sizer {
-  width: 20%;
+.photos .photo, .photos .photo-sizer {
+    width: 10%;
 }
 
 /* presenter */
 
 html.page-presenter-index, .page-presenter-index body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 
 .page-presenter-index .instruction {
-  position: absolute;
-  left: 50%;
-  top: 30%;
-  width: 50%;
-  margin-left: -25%;
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    width: 50%;
+    margin-left: -25%;
 
-  text-align: center;
+    text-align: center;
 
-  background: white;
-  border-radius: 1rem;
+    background: white;
+    border-radius: 1rem;
 
-  padding: 2rem;
+    padding: 2rem;
 
-  overflow: hidden;
+    overflow: hidden;
 }
 
 .page-presenter-index .qr-code {
-  width: 50%;
-  margin: auto;
+    width: 50%;
+    margin: auto;
 }
 
 .page-presenter-index .qr-code.auto-hide {
-  position: absolute;
-  right: 1%;
-  bottom: 1%;
-  width: 20vw;
-  background: #ffffff;
-  border: 1px solid #999999;
-  border-radius: 1em;
-  padding: 1em;
+    position: absolute;
+    right: 1%;
+    bottom: 1%;
+    width: 20vw;
+    background: #ffffff;
+    border: 1px solid #999999;
+    border-radius: 1em;
+    padding: 1em;
 }
 
 .page-presenter-index .qr-code img {
-  width: 100%;
+    width: 100%;
 }
 
 .page-upload, .page-upload body {
-  margin: 0;
-  padding: 4px;
-  width: 100%;
-  height: 100%;
+    margin: 0;
+    padding: 4px;
+    width: 100%;
+    height: 100%;
 }
 
 .page-upload .btn-primary {
-  height: 100%;
-  font-size: 6rem;
+    height: 100%;
+    font-size: 6rem;
 }
