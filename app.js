@@ -36,6 +36,7 @@ app.use('/scripts/qrcodejs', express.static(__dirname + '/node_modules/qrcodejs'
 app.use('/scripts/masonry', express.static(__dirname + '/node_modules/masonry-layout/dist'));
 app.use('/scripts/pdfjs', express.static(__dirname + '/node_modules/pdfjs-dist/build'));
 app.use('/scripts/resizer', express.static(__dirname + '/node_modules/browser-image-resizer/dist'));
+app.use('/scripts/socketio', express.static(__dirname + '/node_modules/socket.io-client/dist'));
 
 app.use(fileUpload());
 

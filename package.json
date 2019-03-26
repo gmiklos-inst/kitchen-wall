@@ -26,6 +26,7 @@
     "node-ssdp": "^4.0.0",
     "pdfjs-dist": "^2.0.943",
     "qrcodejs": "^1.0.0",
+    "socket.io": "^2.2.0",
     "uuid": "^3.3.2"
   },
   "devDependencies": {

@@ -4,10 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const uuid = require('uuid/v1');
 
-const {Hub, sseHub} = require('@toverux/expresse');
 const {namespaceDir} = require('./middleware');
-
-const hub = new Hub();
 
 router.use(namespaceDir('photowall'));
 
@@ -26,12 +23,8 @@ router.get('/', function (req, res) {
             .sort((a, b) => b.stat.ctimeMs - a.stat.ctimeMs)
             .map(file => path.join(req.uploadBase, file.name));
 
-        res.render('photowall/index', { pageClass: 'page-photowall-index', files: actualFiles });
+        res.render('photowall/index', { pageClass: 'page-photowall-index', title: 'Photo wall', files: actualFiles, namespace: req.params.namespace });
     });
-});
-
-router.get('/upload/events', sseHub({hub}), (req, res) => {
-    res.sse.event('welcome', 'Welcome!');
 });
 
 router.get('/upload', (req, res) => {
@@ -46,7 +39,8 @@ router.post('/upload', (req, res) => {
             if (err) {
                 return res.status(500).send(err);
             } else {
-                hub.event('new_file', path.join(req.uploadBase, finalName));
+                const io = req.app.get('io');
+                io.in(req.params.namespace).emit('new_file', path.join(req.uploadBase, finalName));
             }
         });
     }
