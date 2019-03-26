@@ -8,6 +8,9 @@
     <div class="qr-code"></div>
 </div>
 
+<div class="qr-code auto-hide d-none">
+</div>
+
 <script src="/scripts/socketio/socket.io.js"></script>
 <script src="/scripts/qrcodejs/qrcode.js"></script>
 <script src="/scripts/pdfjs/pdf.js"></script>
@@ -17,20 +20,44 @@
 
     const namespace = "{{namespace}}";
 
+    const $instructionQrCode = document.querySelector('.instruction .qr-code');
+    const $qrCodeAutoHide = document.querySelector('.qr-code.auto-hide');
+
     const $instruction = document.querySelector('.instruction');
     const $canvas = document.querySelector('canvas');
     const canvasContext = $canvas.getContext('2d');
 
-    let timeoutId;
+    let pageAdvanceTimeoutId;
     let latestRenderTask;
     let loadingTask;
 
     let currentPresentation = "{{startWith}}";
 
+    let moveTimeout;
+    function timeoutQrOnMouseMove() {
+        if (moveTimeout) {
+            clearTimeout(moveTimeout);
+            moveTimeout = null;
+        }
+
+        if ($qrCodeAutoHide.classList.contains('d-none')) {
+            $qrCodeAutoHide.classList.remove('d-none');
+        }
+
+        moveTimeout = setTimeout(() => {
+            if (!$qrCodeAutoHide.classList.contains('d-none')) {
+                $qrCodeAutoHide.classList.add('d-none');
+            }
+        }, 10000);
+    }
+
     function beginPresenting(file) {
-        if (timeoutId) {
-            clearTimeout(timeoutId);
-            timeoutId = null;
+        window.removeEventListener('mousemove', timeoutQrOnMouseMove);
+        window.addEventListener('mousemove', timeoutQrOnMouseMove);
+
+        if (pageAdvanceTimeoutId) {
+            clearTimeout(pageAdvanceTimeoutId);
+            pageAdvanceTimeoutId = null;
         }
 
         if (latestRenderTask) {
@@ -65,7 +92,7 @@
                     latestRenderTask = page.render({ canvasContext,  viewport: scaledViewport });
                 });
 
-                timeoutId = setTimeout(() => {
+                pageAdvanceTimeoutId = setTimeout(() => {
                     currentPage = (++currentPage % numberOfPages) + 1;
                     renderPage(currentPage);
                 }, 10000);
@@ -91,7 +118,7 @@
         beginPresenting(file);
     });
 
-    const $qrCode = document.querySelector('.qr-code');
-    new QRCode($qrCode, slashJoin(window.location.href, "upload"));
+    new QRCode($instructionQrCode, slashJoin(window.location.href, "upload"));
+    new QRCode($qrCodeAutoHide, slashJoin(window.location.href, "upload"));
 </script>
 

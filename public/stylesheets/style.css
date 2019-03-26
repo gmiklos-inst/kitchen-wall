@@ -67,6 +67,17 @@ html.page-presenter-index, .page-presenter-index body {
   margin: auto;
 }
 
+.page-presenter-index .qr-code.auto-hide {
+  position: absolute;
+  right: 1%;
+  bottom: 1%;
+  width: 20vw;
+  background: #ffffff;
+  border: 1px solid #999999;
+  border-radius: 1em;
+  padding: 1em;
+}
+
 .page-presenter-index .qr-code img {
   width: 100%;
 }
