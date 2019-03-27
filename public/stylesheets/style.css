@@ -49,8 +49,8 @@ html.page-photowall-index, .page-photowall-index body {
 
 .page-photowall-index .glide img {
     margin: auto;
-    max-width: 75%;
-    max-height: 50%;
+    max-width: 75vw;
+    max-height: 60vh;
     width: auto;
     height: auto;
     display: block;

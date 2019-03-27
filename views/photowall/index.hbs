@@ -55,7 +55,7 @@
             const $blurImage = document.createElement('img');
             $blurImage.setAttribute("src", filename);
             $blurImage.classList.add('photo');
-            $backgroundPhotosContainer.prepend($blurImage);
+            $backgroundPhotosContainer.insertBefore($blurImage, $backgroundPhotosContainer.firstChild);
 
             $blurImage.onload = () => {
                 masonry.prepended($blurImage);
@@ -66,7 +66,7 @@
 
             const $glideItem = document.createElement('li');
             $glideItem.classList.add('glide__slide');
-            $glideItem.prepend($glideImage);
+            $glideItem.appendChild($glideImage);
 
             $glidePhotosContainer.appendChild($glideItem);
 
