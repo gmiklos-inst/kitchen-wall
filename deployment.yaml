@@ -5,6 +5,10 @@ metadata:
 spec:
   selector:
     app: kitchen-wall
+  ports:
+  - port: 3000
+    protocol: TCP
+    name: tcp-3000
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -17,7 +21,7 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: kitchen-wall
+          serviceName: kitchen-wall-service
           servicePort: 3000
 ---
 apiVersion: apps/v1
