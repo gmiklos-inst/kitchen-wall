@@ -1,15 +1,24 @@
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
   name: kitchen-wall-service
 spec:
   selector:
     app: kitchen-wall
-  type: NodePort
-  ports:
-    - protocol: TCP
-      port: 3000
-      targetPort: 3000
+---
+apiVersion: extensions/v1
+kind: Ingress
+metadata:
+  name: kitchen-wall-ingress
+spec:
+  rules:
+  - host: kitchen-wall.hacks.webfejleszto.info
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: kitchen-wall-service
+          servicePort: 3000
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -34,3 +43,12 @@ spec:
           image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
           ports:
             - containerPort: 3000
+          volumeMounts:
+            - mountPath: /usr/src/app/files
+              name: kitchen-wall-files
+              subPath: kitchen-wall-files
+      volumes:
+      - name: kitchen-wall-files
+        hostPath:
+          path: /srv/data
+          type: DirectoryOrCreate
