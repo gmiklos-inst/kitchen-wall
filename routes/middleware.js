@@ -6,9 +6,15 @@ module.exports.namespaceDir = function(name) {
         const namespace = req.params.namespace || 'default';
         const namespaceDir = path.join(res.app.locals.filesDir, name, namespace);
 
-        fs.mkdir(namespaceDir, {recursive: true}, (err) => {
+        fs.access(namespace, fs.constants.F_OK, (err) => {
             if (err) {
-                res.status(500).send(err);
+                fs.mkdir(namespaceDir, {recursive: true}, (err) => {
+                    if (err) {
+                        res.status(500).send(err);
+                    } else {
+                        next();
+                    }
+                });
             } else {
                 next();
             }
