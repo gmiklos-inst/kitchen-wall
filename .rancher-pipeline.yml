@@ -5,3 +5,7 @@ stages:
           dockerfilePath: ./Dockerfile
           buildContext: .
           tag: kitchen-wall:${CICD_EXECUTION_SEQUENCE}
+  - name: Deploy
+    steps:
+      - applyYamlConfig:
+          path: ./deployment.yaml

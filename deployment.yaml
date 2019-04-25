@@ -1,0 +1,36 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: kitchen-wall-service
+spec:
+  selector:
+    app: kitchen-wall
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-kitchen-wall
+  labels:
+    app: kitchen-wall
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kitchen-wall
+  template:
+    metadata:
+      labels:
+        app: kitchen-wall
+    spec:
+      imagePullSecrets:
+        - name: pipeline-docker-registry
+      containers:
+        - name: kitchen-wall
+          image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
+          ports:
+            - containerPort: 3000
