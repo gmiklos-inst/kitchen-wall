@@ -17,7 +17,7 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: kitchen-wall-service
+          serviceName: kitchen-wall
           servicePort: 3000
 ---
 apiVersion: apps/v1
