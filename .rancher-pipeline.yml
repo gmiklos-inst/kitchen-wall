@@ -1,0 +1,7 @@
+stages:
+  - name: Publish
+    steps:
+      - publishImageConfig:
+          dockerfilePath: ./Dockerfile
+          buildContext: .
+          tag: kitchen-wall:${CICD_EXECUTION_SEQUENCE}
