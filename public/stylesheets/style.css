@@ -27,34 +27,12 @@ html.page-photowall-index, .page-photowall-index body {
 }
 
 .page-photowall-index .photos {
-    filter: blur(4px);
     position: absolute;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
-}
-
-.page-photowall-index .glide {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.page-photowall-index .glide__slide {
-    padding: 1em;
-}
-
-.page-photowall-index .glide img {
-    margin: auto;
-    max-width: 75vw;
-    max-height: 60vh;
-    width: auto;
-    height: auto;
-    display: block;
-    box-shadow:0 1px 8px rgba(0,0,0,0.9);
+    transform-origin: 0 0;
 }
 
 .page-photowall-index .no-pics {
@@ -75,10 +53,11 @@ html.page-photowall-index, .page-photowall-index body {
     background: white;
     border-radius: 1rem;
     padding: 1rem;
+    opacity: .75;
 }
 
 .photos .photo, .photos .photo-sizer {
-    width: 10%;
+    width: 25%;
 }
 
 /* presenter */

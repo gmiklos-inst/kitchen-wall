@@ -12,86 +12,51 @@
     </div>
 {{/if}}
 
-<div class="glide">
-    <div class="glide__track" data-glide-el="track">
-        <ul class="glide__slides">
-            {{#each files}}
-                <li class="glide__slide">
-                    <img src="{{this}}" />
-                </li>
-            {{/each}}
-        </ul>
-    </div>
-</div>
-
 <div id="qr-code" class="qr-code"></div>
 
 <script src="/scripts/socketio/socket.io.js"></script>
 <script src="/scripts/qrcodejs/qrcode.js"></script>
 <script src="/scripts/masonry/masonry.pkgd.js"></script>
 <script src="/scripts/imagesloaded/imagesloaded.pkgd.js"></script>
-<script src="/scripts/glide/glide.js"></script>
+<script src="/javascripts/zoomer.js"></script>
 <script type="application/javascript">
     enableFullscreenToggle();
 
     const namespace = "{{namespace}}";
 
     const $noPics = document.querySelector('.no-pics');
-    const $backgroundPhotosContainer = document.getElementById("photos");
-    const $glidePhotosContainer = document.querySelector(".glide .glide__slides");
+    const $photos = document.getElementById("photos");
 
-    imagesLoaded($backgroundPhotosContainer, () => {
-        const masonry = new Masonry($backgroundPhotosContainer, {
+    const zoomer = new Zoomer($photos);
+
+    imagesLoaded($photos, () => {
+        const masonry = new Masonry($photos, {
             itemSelector: '.photo',
             columnWidth: '.photo-sizer',
             percentPosition: true
         });
+
+        masonry.on('layoutComplete', () => zoomer.retarget());
 
         const socket = io(`/photowall?room=${namespace}`);
 
         socket.on('new_file', (filename) => {
             $noPics && $noPics.remove();
 
-            const $blurImage = document.createElement('img');
-            $blurImage.setAttribute("src", filename);
-            $blurImage.classList.add('photo');
-            $backgroundPhotosContainer.insertBefore($blurImage, $backgroundPhotosContainer.firstChild);
+            const $newImage = document.createElement('img');
+            $newImage.setAttribute("src", filename);
+            $newImage.classList.add('photo');
+            $photos.insertBefore($newImage, $photos.firstChild);
 
-            $blurImage.onload = () => {
-                masonry.prepended($blurImage);
+            $newImage.onload = () => {
+                masonry.prepended($newImage);
             };
-
-            const $glideImage = document.createElement('img');
-            $glideImage.setAttribute("src", filename);
-
-            const $glideItem = document.createElement('li');
-            $glideItem.classList.add('glide__slide');
-            $glideItem.appendChild($glideImage);
-
-            $glidePhotosContainer.appendChild($glideItem);
-
-            initGlide()
         });
+
+        zoomer.start();
     });
 
     const $qrCode = document.getElementById('qr-code');
     new QRCode($qrCode, slashJoin(window.location.href, "upload"));
 
-    let activeGlide;
-    function initGlide() {
-        if (activeGlide) {
-            activeGlide.destroy();
-            activeGlide = null;
-        }
-
-        activeGlide = new Glide('.glide', {
-            type: 'carousel',
-            autoplay: 5000,
-            keyboard: false
-        }).mount();
-    }
-
-    if ($glidePhotosContainer.children.length) {
-        initGlide();
-    }
 </script>
