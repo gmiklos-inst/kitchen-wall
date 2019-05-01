@@ -1,3 +1,5 @@
+import './polyfills'
+
 import './style.css'
 
 import io from 'socket.io-client'
@@ -74,6 +76,6 @@ function startup({ namespace, files, imageLimit = 200 }) {
     });
 
     const $qrCode = document.querySelector('#qr-code canvas');
-    const url = `${window.location.origin}/ui/photowall/upload.html?namespace=${namespace}`;
+    const url = `${window.location.origin}/upload.html?namespace=${namespace}`;
     QRCode.toCanvas($qrCode, url, { margin: 0 });
 }

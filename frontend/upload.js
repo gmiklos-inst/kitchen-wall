@@ -1,3 +1,5 @@
+import './polyfills'
+
 import 'font-awesome/css/font-awesome.css'
 import '../node_modules/bootstrap/dist/css/bootstrap.css'
 import './style.css'
