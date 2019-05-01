@@ -17,6 +17,18 @@
     top: 0;
 }
 
+.page-upload, .page-upload body {
+    margin: 0;
+    padding: 4px;
+    width: 100%;
+    height: 100%;
+}
+
+.page-upload .btn-primary {
+    height: 100%;
+    font-size: 6rem;
+}
+
 /* photowall */
 html.page-photowall-index, .page-photowall-index body {
     position: relative;
@@ -105,16 +117,4 @@ html.page-presenter-index, .page-presenter-index body {
 
 .page-presenter-index .qr-code img {
     width: 100%;
-}
-
-.page-upload, .page-upload body {
-    margin: 0;
-    padding: 4px;
-    width: 100%;
-    height: 100%;
-}
-
-.page-upload .btn-primary {
-    height: 100%;
-    font-size: 6rem;
 }

@@ -1,0 +1,45 @@
+html.page-photowall-index, .page-photowall-index body {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    background: #394B58;
+}
+
+.page-photowall-index .photos {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    transform-origin: 0 0;
+}
+
+.page-photowall-index .no-pics {
+    position: absolute;
+    width: 50%;
+    left: 50%;
+    top: 50%;
+    margin-left: -25%;
+    font-size: 5em;
+    text-align: center;
+    color: white;
+}
+
+.page-photowall-index .qr-code {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    background: white;
+    border-radius: 1rem;
+    padding: 1rem;
+    opacity: .75;
+}
+
+.photos .photo, .photos .photo-sizer {
+    width: 25%;
+}
+
+.hide {
+    display: none;
+}

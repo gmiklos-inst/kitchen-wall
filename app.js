@@ -20,6 +20,8 @@ app.locals.filesDir = filesDir;
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
+app.set('image limit', 100);
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -37,7 +39,9 @@ app.use('/scripts/masonry', express.static(__dirname + '/node_modules/masonry-la
 app.use('/scripts/pdfjs', express.static(__dirname + '/node_modules/pdfjs-dist/build'));
 app.use('/scripts/resizer', express.static(__dirname + '/node_modules/browser-image-resizer/dist'));
 app.use('/scripts/socketio', express.static(__dirname + '/node_modules/socket.io-client/dist'));
-app.use('/scripts/glide', express.static(__dirname + '/node_modules/@glidejs/glide/dist'));
+
+app.use('/ui/photowall', express.static(__dirname + '/frontend/photowall/presentation/dist'));
+
 
 app.use(fileUpload());
 
