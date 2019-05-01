@@ -1,3 +1,2 @@
 - PIN security for presenter.
 - Retain last 3 days of pics for Photowalls.
-- Shuffle order and display all pics in a lightbox.

@@ -13,6 +13,11 @@
 
 <script src="/scripts/resizer/index.js"></script>
 <script type="application/javascript">
+    function extension(filename) {
+        const index = filename.lastIndexOf('.');
+        return index !== -1 ? filename.substring(index) : '';
+    }
+
     if (window.File && window.FileReader && window.FormData) {
         const $inputField = document.getElementById('file-input');
         const $successAlert = document.getElementById('success-alert');
@@ -38,34 +43,42 @@
 
             Promise.all(
                     inputFiles.map(file =>
-                            BrowserImageResizer.readAndCompressImage(file, resizeConfig)
+                            file.type === 'image/jpeg' ?
+                                    BrowserImageResizer.readAndCompressImage(file, resizeConfig).then(blob => {
+                                        blob.name = file.name;
+                                        return blob;
+                                    })
+                                    : file
                     )
             ).then(resizedFiles => {
-                const formData = new FormData();
-
-                let fileIdx = 0;
-                for (const file of resizedFiles) {
-                    if (file && /^image\//i.test(file.type)) {
-                        formData.append(`upload${fileIdx++}`, file);
-                    }
-                }
-
-                fetch(window.location.href, {
-                    method: 'POST',
-                    body: formData
-                }).then(() => {
-                    $successAlert.classList.remove('d-none');
-                })
-                .catch((err) => {
-                    $errorAlert.classList.remove('d-none');
-                    $errorAlert.innerText = err;
-                });
-
+                uploadFiles(resizedFiles);
             }).catch((err) => {
                 $errorAlert.classList.remove('d-none');
                 $errorAlert.innerText = err;
             });
         });
+
+        function uploadFiles(resizedFiles) {
+            const formData = new FormData();
+
+            let fileIdx = 0;
+            for (const file of resizedFiles) {
+                if (file && /^image\//i.test(file.type)) {
+                    const ext = extension(file.name);
+                    formData.append(`upload-${fileIdx++}${ext}`, file);
+                }
+            }
+
+            fetch(window.location.href, {
+                method: 'POST',
+                body: formData
+            }).then(() => {
+                $successAlert.classList.remove('d-none');
+            }).catch((err) => {
+                $errorAlert.classList.remove('d-none');
+                $errorAlert.innerText = err;
+            });
+        }
     } else {
         alert("File upload is not supported!");
     }

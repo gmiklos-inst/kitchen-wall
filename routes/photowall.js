@@ -32,8 +32,9 @@ router.get('/upload', (req, res) => {
 });
 
 router.post('/upload', (req, res) => {
-    for (const file of Object.values(req.files)) {
-        const finalName = `upload-${uuid()}.jpg`;
+    for (const [filename, file] of Object.entries(req.files)) {
+        const ext = path.extname(filename);
+        const finalName = `upload-${uuid()}${ext}`;
 
         file.mv(path.join(req.uploadDir, finalName), (err) => {
             if (err) {
