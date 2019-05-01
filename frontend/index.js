@@ -30,7 +30,7 @@ function startup({ namespace, files, imageLimit = 200 }) {
             $photos.appendChild(createPhoto(file))
         }
     } else {
-        $noPics.classList.remove('hide');
+        $noPics.classList.remove('d-none');
     }
 
     function createPhoto(filename) {

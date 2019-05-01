@@ -29,6 +29,10 @@
     font-size: 6rem;
 }
 
+.page-upload .alert, .page-upload .progress {
+    margin-top: 1rem;
+}
+
 html.page-photowall-index, .page-photowall-index body {
     position: relative;
     overflow: hidden;
@@ -69,8 +73,4 @@ html.page-photowall-index, .page-photowall-index body {
 
 .photos .photo, .photos .photo-sizer {
     width: 25%;
-}
-
-.hide {
-    display: none;
 }

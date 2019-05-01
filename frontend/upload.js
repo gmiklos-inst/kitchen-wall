@@ -14,6 +14,8 @@ if (window.File && window.FileReader && window.FormData) {
     const $inputField = document.getElementById('file-input');
     const $successAlert = document.getElementById('success-alert');
     const $errorAlert = document.getElementById('error-alert');
+    const $progress = document.getElementById('progress');
+    const $progressBar = $progress.querySelector('.progress-bar');
 
     const resizeConfig = {
         quality: 0.90,
@@ -22,16 +24,47 @@ if (window.File && window.FileReader && window.FormData) {
         autoRotate: true
     };
 
-    $inputField.addEventListener('change', e => {
-        if (!$successAlert.classList.contains('d-none')) {
-            $successAlert.classList.add('d-none');
+    function showEl($el) {
+        if ($el.classList.contains('d-none')) {
+            $el.classList.remove('d-none');
         }
+    }
 
-        if (!$errorAlert.classList.contains('d-none')) {
-            $errorAlert.classList.add('d-none');
+    function hideEl($el) {
+        if (!$el.classList.contains('d-none')) {
+            $el.classList.add('d-none');
         }
+    }
+
+    function clearState() {
+        hideEl($successAlert);
+        hideEl($errorAlert);
+        hideEl($progress);
+    }
+
+    function showSuccess() {
+        hideEl($progress)
+        hideEl($errorAlert)
+        showEl($successAlert);
+    }
+
+    function showError(msg) {
+        hideEl($progress);
+        hideEl($successAlert);
+        showEl($errorAlert);
+        $errorAlert.innerText = msg;
+    }
+
+    function showProgress() {
+        showEl($progress);
+    }
+
+    $inputField.addEventListener('change', e => {
+        clearState();
 
         const inputFiles = Array.from(e.target.files);
+
+        showProgress();
 
         Promise.all(
             inputFiles.map(file =>
@@ -42,11 +75,12 @@ if (window.File && window.FileReader && window.FormData) {
                     })
                     : file
             )
-        ).then(resizedFiles => {
-            uploadFiles(resizedFiles);
+        ).then(resizedFiles =>
+            uploadFiles(resizedFiles))
+        .then(() => {
+            showSuccess();
         }).catch((err) => {
-            $errorAlert.classList.remove('d-none');
-            $errorAlert.innerText = err;
+            showError("Unable to upload photo.");
         });
     });
 
@@ -61,14 +95,9 @@ if (window.File && window.FileReader && window.FormData) {
             }
         }
 
-        fetch(`/photowall/${namespace}/upload`, {
+        return fetch(`/photowall/${namespace}/upload`, {
             method: 'POST',
             body: formData
-        }).then(() => {
-            $successAlert.classList.remove('d-none');
-        }).catch((err) => {
-            $errorAlert.classList.remove('d-none');
-            $errorAlert.innerText = err;
         });
     }
 } else {
