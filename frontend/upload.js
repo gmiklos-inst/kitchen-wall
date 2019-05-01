@@ -15,7 +15,6 @@ if (window.File && window.FileReader && window.FormData) {
     const $successAlert = document.getElementById('success-alert');
     const $errorAlert = document.getElementById('error-alert');
     const $progress = document.getElementById('progress');
-    const $progressBar = $progress.querySelector('.progress-bar');
 
     const resizeConfig = {
         quality: 0.90,
@@ -98,6 +97,11 @@ if (window.File && window.FileReader && window.FormData) {
         return fetch(`/photowall/${namespace}/upload`, {
             method: 'POST',
             body: formData
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            return response;
         });
     }
 } else {
