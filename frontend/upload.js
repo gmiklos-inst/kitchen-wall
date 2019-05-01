@@ -1,10 +1,9 @@
-import '../../../node_modules/font-awesome/css/font-awesome.css'
-import '../../../node_modules/bootstrap/dist/css/bootstrap.css'
+import 'font-awesome/css/font-awesome.css'
+import '../node_modules/bootstrap/dist/css/bootstrap.css'
 import './style.css'
-import '../../common.css'
 
 import { readAndCompressImage } from 'browser-image-resizer';
-import { extension } from "../../common";
+import { extension } from "./utils";
 
 if (window.File && window.FileReader && window.FormData) {
     const parameters = new URLSearchParams(window.location.search);

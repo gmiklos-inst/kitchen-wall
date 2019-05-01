@@ -5,7 +5,7 @@ import QRCode from 'qrcode'
 import Masonry from 'masonry-layout'
 import imagesLoaded from 'imagesloaded'
 
-import { enableFullscreenToggle, slashJoin } from '../../common'
+import { enableFullscreenToggle, slashJoin } from './utils'
 import Zoomer from './zoomer'
 
 enableFullscreenToggle();

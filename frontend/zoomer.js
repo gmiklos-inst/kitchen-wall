@@ -1,4 +1,4 @@
-import { shuffle } from "../../common";
+import { shuffle } from "./utils";
 
 const PANNING = 1;
 const WAITING = 2;
