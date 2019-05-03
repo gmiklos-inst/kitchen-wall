@@ -35,28 +35,28 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: kitchen-wall
-  name: kitchen-wall-service
+    app: photowall
+  name: photowall-service
 spec:
   ports:
   - name: "80"
     port: 80
     targetPort: 3000
   selector:
-    app: kitchen-wall
+    app: photowall
 status:
   loadBalancer: {}
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: kitchen-wall-ingress
+  name: photowall-ingress
 spec:
   rules:
-  - host: kitchen-wall.hacks.webfejleszto.info
+  - host: photowall.hacks.webfejleszto.info
     http:
       paths:
       - path: /
         backend:
-          serviceName: kitchen-wall-service
+          serviceName: photowall-service
           servicePort: 3000
