@@ -8,8 +8,9 @@ const {namespaceDir} = require('./middleware');
 
 router.use(namespaceDir('photowall'));
 
-/* GET home page. */
 router.get('/', function (req, res) {
+    const imageLimit = req.app.get('image limit');
+
     fs.readdir(req.uploadDir, (err, files) => {
         if (err) {
             return res.status(500).send(err);
@@ -21,14 +22,11 @@ router.get('/', function (req, res) {
             }))
             .filter(file => file.stat.isFile())
             .sort((a, b) => b.stat.ctimeMs - a.stat.ctimeMs)
+            .slice(0, imageLimit)
             .map(file => path.join(req.uploadBase, file.name));
 
-        res.render('photowall/index', { pageClass: 'page-photowall-index', title: 'Photo wall', files: actualFiles, namespace: req.params.namespace });
+        res.json({ files: actualFiles, imageLimit });
     });
-});
-
-router.get('/upload', (req, res) => {
-    res.render('photowall/upload', {pageClass: 'page-photowall-upload page-upload'});
 });
 
 router.post('/upload', (req, res) => {

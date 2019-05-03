@@ -1,16 +1,9 @@
-Array.prototype.shuffle = function() {
-    let m = this.length, i;
-    while (m) {
-        i = (Math.random() * m--) >>> 0;
-        [this[m], this[i]] = [this[i], this[m]]
-    }
-    return this;
-};
+import { shuffle } from "./utils";
 
 const PANNING = 1;
 const WAITING = 2;
 
-class Zoomer {
+export default class Zoomer {
 
     constructor(container) {
         this.container = container;
@@ -22,7 +15,10 @@ class Zoomer {
 
     _findTargets() {
         let elements = Array.from(this.container.querySelectorAll('img'));
-        return [elements[0], ...elements.slice(1).shuffle()].map(item => ({
+
+        if (elements.length === 0) return [];
+
+        return [elements[0], ...shuffle(elements.slice(1))].map(item => ({
             cx: item.offsetLeft + (item.offsetWidth / 2),
             cy: item.offsetTop + (item.offsetHeight / 2),
             w: item.offsetWidth,
@@ -32,7 +28,9 @@ class Zoomer {
 
     retarget() {
         this.targets = this._findTargets();
-        this.panTo(0);
+        if (this.targets.length) {
+            this.panTo(0);
+        }
     }
 
     start() {

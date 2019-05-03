@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" class="page-photowall-upload page-upload">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Photowall</title>
+</head>
+<body>
+
+<div class="page-upload d-flex flex-column">
+    <div class="styled-file-container flex-fill">
+        <button class="btn btn-primary btn-lg btn-block">Upload</button>
+        <input id="file-input" type="file" name="name" multiple accept="image/*"/>
+    </div>
+    <div id="success-alert" class="alert alert-success d-none" role="alert">
+        <i class="fa fa-check"></i> Uploaded successfully
+    </div>
+    <div id="error-alert" class="alert alert-danger d-none" role="alert">
+        <i class="fa fa-exclamation-triangle"></i> Error
+    </div>
+    <div id="progress" class="progress d-none">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+    </div>
+</div>
+
+<script src="upload.js"></script>
+</body>
+</html>
