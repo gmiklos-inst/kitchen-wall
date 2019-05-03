@@ -1,17 +1,3 @@
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: kitchen-wall-ingress
-spec:
-  rules:
-  - host: kitchen-wall.hacks.webfejleszto.info
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: kitchen-wall-service
-          servicePort: 3000
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -44,3 +30,33 @@ spec:
         hostPath:
           path: /srv/data
           type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  labels: 
+    app: kitchen-wall
+  name: demo
+spec:
+  ports:
+  - name: "80"
+    port: 80
+    targetPort: 3000
+  selector:
+    app: kitchen-wall
+status:
+  loadBalancer: {}
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: kitchen-wall-ingress
+spec:
+  rules:
+  - host: kitchen-wall.hacks.webfejleszto.info
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: kitchen-wall-service
+          servicePort: 3000
