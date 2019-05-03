@@ -36,7 +36,7 @@ kind: Service
 metadata: 
   labels: 
     app: kitchen-wall
-  name: demo
+  name: kitchen-wall-service
 spec:
   ports:
   - name: "80"
