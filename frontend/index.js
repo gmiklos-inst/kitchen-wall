@@ -1,5 +1,6 @@
 import './polyfills'
 
+import '../node_modules/bootstrap/dist/css/bootstrap.css'
 import './style.css'
 
 import io from 'socket.io-client'
