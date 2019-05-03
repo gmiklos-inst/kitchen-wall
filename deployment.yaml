@@ -1,40 +1,40 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deployment-kitchen-wall
+  name: deployment-photowall
   labels:
-    app: kitchen-wall
+    app: photowall
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: kitchen-wall
+      app: photowall
   template:
     metadata:
       labels:
-        app: kitchen-wall
+        app: photowall
     spec:
       imagePullSecrets:
         - name: pipeline-docker-registry
       containers:
-        - name: kitchen-wall
+        - name: photowall
           image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
           ports:
             - containerPort: 3000
           volumeMounts:
             - mountPath: /usr/src/app/files
-              name: kitchen-wall-files
-              subPath: kitchen-wall-files
+              name: photowall-files
+              subPath: photowall-files
       volumes:
-      - name: kitchen-wall-files
+      - name: photowall-files
         hostPath:
           path: /srv/data
           type: DirectoryOrCreate
 ---
 apiVersion: v1
 kind: Service
-metadata: 
-  labels: 
+metadata:
+  labels:
     app: kitchen-wall
   name: kitchen-wall-service
 spec:
