@@ -1,4 +1,4 @@
-import { shuffle } from "./utils";
+import {shuffle} from "./utils";
 
 const PANNING = 1;
 const WAITING = 2;
@@ -7,10 +7,13 @@ export default class Zoomer {
 
     constructor(container) {
         this.container = container;
-        this.active = false;
-        this.thisFrame = this._frame.bind(this);
-        this.waitDuration = 5000;
+
+        this.animationRunning = null;
+
+        this.waitDuration = 1000;
         this.panDuration = 2000;
+
+        this.container.style.transition = `all ${this.panDuration}ms ease-in-out`;
     }
 
     _findTargets() {
@@ -34,48 +37,28 @@ export default class Zoomer {
     }
 
     start() {
-        this.active = true;
-
-        this.currentX = 0;
-        this.currentY = 0;
+        this.targetX = 0;
+        this.targetY = 0;
         this.currentZoom = 2.0;
-
         this.retarget();
 
-        requestAnimationFrame(this.thisFrame);
+        this._zoomToPhoto();
+        this.animationRunning = setInterval(this._zoomToPhoto.bind(this), this.panDuration + this.waitDuration);
     }
 
-    _switchState(nextState) {
-        this.state = nextState;
-        this.stateBegan = performance.now();
-    }
-
-    _frame(timestamp) {
+    _zoomToPhoto() {
         if (this.targets.length) {
-            if (this.state === PANNING) {
-                const progress =  Math.min((timestamp - this.stateBegan) / this.panDuration, 1.0);
 
-                this.currentX = this.panStartX + this.panDirectionVector.x * Math.sin(Math.PI / 2 * progress);
-                this.currentY = this.panStartY + this.panDirectionVector.y * Math.sin(Math.PI / 2 * progress);
-                this.currentZoom = this.panStartZoom + this.panZoomIncrement * Math.sin(Math.PI / 2 * progress);
+            this.targetX = this.panStartX + this.panDirectionVector.x;
+            this.targetY = this.panStartY + this.panDirectionVector.y;
+            this.currentZoom = this.panStartZoom + this.panZoomIncrement;
 
-                const transformX = ((document.body.offsetWidth / 2) - this.currentX * this.currentZoom);
-                const transformY = ((document.body.offsetHeight / 2) - this.currentY * this.currentZoom);
+            const transformX = ((document.body.offsetWidth / 2) - this.targetX * this.currentZoom);
+            const transformY = ((document.body.offsetHeight / 2) - this.targetY * this.currentZoom);
 
-                this.container.style.transform = `translate(${transformX}px, ${transformY}px) scale(${this.currentZoom})`;
+            this.container.style.transform = `translate(${transformX}px, ${transformY}px) scale(${this.currentZoom})`;
 
-                if (timestamp - this.stateBegan >= this.panDuration) {
-                    this._switchState(WAITING);
-                }
-            } else if (this.state === WAITING) {
-                if (timestamp - this.stateBegan >= this.waitDuration) {
-                    this.panTo((this.targetIndex + 1) % this.targets.length);
-                }
-            }
-        }
-
-        if (this.active) {
-            requestAnimationFrame(this.thisFrame);
+            this.panTo((this.targetIndex + 1) % this.targets.length);
         }
     }
 
@@ -85,17 +68,16 @@ export default class Zoomer {
         const target = this.targets[this.targetIndex];
         const targetZoom = (document.body.offsetHeight / target.h) * 0.8;
 
-        this.panStartX = this.currentX;
-        this.panStartY = this.currentY;
+        this.panStartX = this.targetX;
+        this.panStartY = this.targetY;
         this.panStartZoom = this.currentZoom;
 
         this.panDirectionVector = {
-            x: (target.cx - this.currentX),
-            y: (target.cy - this.currentY)
+            x: (target.cx - this.targetX),
+            y: (target.cy - this.targetY)
         };
         this.panZoomIncrement = targetZoom - this.currentZoom;
 
-        this._switchState(PANNING);
     }
 
     stop() {
