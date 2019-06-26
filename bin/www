@@ -33,7 +33,6 @@ const fnJoinRoom = (socket) => {
 };
 
 app.set('io.photowall', io.of('/photowall').on('connection', fnJoinRoom));
-app.set('io.presenter', io.of('/presenter').on('connection', fnJoinRoom));
 
 /**
  * Listen on provided port, on all network interfaces.
