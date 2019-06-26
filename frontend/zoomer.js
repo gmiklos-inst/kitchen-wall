@@ -10,7 +10,7 @@ export default class Zoomer {
 
         this.animationRunning = null;
 
-        this.waitDuration = 1000;
+        this.waitDuration = 5000;
         this.panDuration = 2000;
 
         this.container.style.transition = `all ${this.panDuration}ms ease-in-out`;
